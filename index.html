@@ -13,14 +13,17 @@
 </head>
 
 <body>
-    <div id="app"></div>
+    <file-browser></file-browser>
     <script type="module">
+        import './components/breadcrumbPath.js';
+        import './components/defineComponent.js';
+        import './components/deleteDialog.js';
         import './components/fileBrowser.js';
-        document.addEventListener('DOMContentLoaded', () => {
-            const app = document.getElementById('app');
-            const browser = document.createElement('file-browser');
-            app.appendChild(browser);
-        });
+        import './components/fileEditor.js';
+        import './components/fileList.js';
+        import './components/folderList.js';
+        import './components/newFileForm.js';
+        import './components/newFolderForm.js';
 
     </script>
 </body>

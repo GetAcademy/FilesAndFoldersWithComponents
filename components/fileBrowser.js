@@ -1,8 +1,8 @@
 import { defineComponent } from './defineComponent.js';
-import { model } from '../model.js';
+import {model } from '../model.js';
 
 defineComponent('file-browser', (el, props, state, emit) => {
-  // const currentId = model.app.currentId;
+  const currentId = model.app.currentId;
   // const currentFile = model.filesAndFolders.find(f => f.id === currentId);
   // const currentFolder = currentFile?.hasOwnProperty('content') ? model.filesAndFolders.find(f => f.id === currentFile.parentId) : currentFile;
 
@@ -11,18 +11,11 @@ defineComponent('file-browser', (el, props, state, emit) => {
 
   el.innerHTML = /*HTML*/`
     <h1>Filer og mapper</h1>
-    <folder-list></folder-list>
-  `;
-});
-
-
-/*
     <breadcrumb-path current-id="${currentId ?? ''}"></breadcrumb-path>
     <folder-list></folder-list>
     <file-list></file-list>
     <file-editor></file-editor>
     <new-folder-form></new-folder-form>
     <new-file-form></new-file-form>
-    <delete-dialog></delete-dialog>
-
-*/
+    <delete-dialog></delete-dialog>  `;
+});

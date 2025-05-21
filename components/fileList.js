@@ -1,4 +1,4 @@
-import { defineComponent } from '../common/defineComponent.js';
+import { defineComponent } from './defineComponent.js';
 import { model } from '../model.js';
 
 defineComponent('file-list', (el, props, state, emit) => {
