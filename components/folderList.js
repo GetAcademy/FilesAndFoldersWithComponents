@@ -1,5 +1,4 @@
-// components/folder-list.js
-import { defineComponent } from '../common/defineComponent.js';
+import { defineComponent } from './defineComponent.js';
 import { model } from '../model.js';
 
 defineComponent('folder-list', (el, props, state, emit) => {
@@ -7,21 +6,21 @@ defineComponent('folder-list', (el, props, state, emit) => {
   const currentFolder = model.filesAndFolders.find(f => f.id === currentId && !f.content);
   const folders = model.filesAndFolders.filter(f => !f.content && f.parentId === (currentFolder?.id ?? null));
 
-  let html = '';
-  if (currentFolder && currentFolder.parentId != null) {
-    html += `📁 <a href="#" data-id="${currentFolder.parentId}">..</a><br/>`;
-  }
+  let html = 'Folder list';
+  // if (currentFolder && currentFolder.parentId != null) {
+  //   html += `📁 <a href="#" data-id="${currentFolder.parentId}">..</a><br/>`;
+  // }
 
-  for (const folder of folders) {
-    html += `📁 <a href="#" data-id="${folder.id}">${folder.name}</a><br/>`;
-  }
+  // for (const folder of folders) {
+  //   html += `📁 <a href="#" data-id="${folder.id}">${folder.name}</a><br/>`;
+  // }
 
   el.innerHTML = html;
-  el.querySelectorAll('a').forEach(a => {
-    a.onclick = e => {
-      e.preventDefault();
-      model.app.currentId = +a.dataset.id;
-      document.querySelector('file-browser')._queueRender();
-    };
-  });
+  // el.querySelectorAll('a').forEach(a => {
+  //   a.onclick = e => {
+  //     e.preventDefault();
+  //     model.app.currentId = +a.dataset.id;
+  //     document.querySelector('file-browser')._queueRender();
+  //   };
+  // });
 });
