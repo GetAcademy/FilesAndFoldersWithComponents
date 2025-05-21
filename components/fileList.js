@@ -11,7 +11,7 @@ defineComponent('file-list', (el, props, state, emit) => {
   for (const file of files) {
     html += `<span>🗎</span> <a href="#" data-id="${file.id}">${file.name}</a><br/>`;
   }
-  el.innerHTML = html;
+  el.innerHTML = `<fieldset><legend>Filer</legend>${html}</fieldset>`;
   el.querySelectorAll('a').forEach(a => {
     a.onclick = e => {
       e.preventDefault();

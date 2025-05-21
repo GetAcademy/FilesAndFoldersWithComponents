@@ -3,9 +3,10 @@ import { model } from '../model.js';
 
 defineComponent('folder-list', (el, props, state, emit) => {
   const currentId = model.app.currentId;
-  const currentFolder = model.filesAndFolders.find(f => f.id === currentId && !f.content);
-  const folders = model.filesAndFolders.filter(f => !f.content && f.parentId === (currentFolder?.id ?? null));
-  console.log(currentId, currentFolder, folders);
+  const currentFolder = model.filesAndFolders.find(
+    f => f.id === currentId && !f.content);
+    const currentFolderId = currentFolder?.id ?? undefined;
+  const folders =  model.filesAndFolders.filter(f => !f.content && f.parentId === currentFolderId);
 
   let html = '';
   if (currentFolder && currentFolder.parentId != null) {

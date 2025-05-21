@@ -13,5 +13,5 @@ const model = {
         { id: 6, name: 'notater.txt', content: 'abc' },
     ],
 };
-
+window.model = model;
 export { model };
