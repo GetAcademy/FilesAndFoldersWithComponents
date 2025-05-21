@@ -8,10 +8,12 @@ defineComponent('file-editor', (el, props, state, emit) => {
     el.innerHTML = '';
     return;
   }
-  el.innerHTML = `
+  el.innerHTML = /*HTML*/`
+    <fieldset><legend>Redigering</legend>
     <textarea id="editArea">${currentFile.content}</textarea><br/>
     <button id="save">Lagre</button>
     <button id="cancel">Avbryt</button>
+    </fieldset>
   `;
   el.querySelector('#save').onclick = () => {
     currentFile.content = el.querySelector('#editArea').value;
