@@ -4,7 +4,7 @@ import { model } from '../model.js';
 defineComponent('breadcrumb-path', (el, props, state, emit) => {
   let id = model.app.currentId;
   if (id == null) {
-    el.innerHTML = '<i>rotmappe</i>';
+    el.innerHTML = `<fieldset><legend>Her er du nå</legend><i>rotmappe</i></fieldset>`;
     return;
   }
   let breadcrumbs = [];
@@ -13,5 +13,5 @@ defineComponent('breadcrumb-path', (el, props, state, emit) => {
     breadcrumbs.unshift(`<span>${f.name}</span>`);
     id = f.parentId;
   }
-  el.innerHTML = breadcrumbs.join(' > ');
+  el.innerHTML = `<fieldset><legend>Her er du nå</legend>${breadcrumbs.join(' > ')}</fieldset>`;
 });
