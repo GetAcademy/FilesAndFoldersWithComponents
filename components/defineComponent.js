@@ -1,67 +1,38 @@
-export function defineComponent(tagName, renderFn, props = []) {
-  class AutoComponent extends HTMLElement {
+export function defineComponent(tagName, renderFn, propNames = []) {
+  class Component extends HTMLElement {
     static get observedAttributes() {
-      return props.map(p => typeof p === 'string' ? p : p.name);
+      return propNames;
     }
 
     constructor() {
       super();
       this.attachShadow({ mode: 'open' });
-      this._props = {};
+      this.props = {};
       this.state = {};
-      this._renderQueued = false;
-
-      props.forEach(p => {
-        const name = typeof p === 'string' ? p : p.name;
-        Object.defineProperty(this, name, {
-          get: () => this._props[name],
-          set: value => {
-            const castedValue = castProp(p, value);
-            if (this._props[name] !== castedValue) {
-              this._props[name] = castedValue;
-              this.setAttribute(name, castedValue);
-              this._queueRender();
-            }
-          }
-        });
-      });
     }
 
     connectedCallback() {
-      props.forEach(p => {
-        const name = typeof p === 'string' ? p : p.name;
-        const attr = this.getAttribute(name);
-        if (attr !== null) {
-          this._props[name] = castProp(p, attr);
+      for (const name of propNames) {
+        if (this.hasAttribute(name)) {
+          this.props[name] = this.getAttribute(name);
         }
-      });
-      this._queueRender();
+      }
+      this.render();
     }
 
     attributeChangedCallback(name, oldValue, newValue) {
       if (oldValue !== newValue) {
-        const p = props.find(p => (typeof p === 'string' ? p : p.name) === name);
-        this._props[name] = castProp(p, newValue);
-        this._queueRender();
+        this.props[name] = newValue;
+        this.render();
       }
     }
 
-    _queueRender() {
-      if (!this._renderQueued) {
-        this._renderQueued = true;
-        queueMicrotask(() => {
-          this._renderQueued = false;
-          this._render();
-        });
-      }
+    render() {
+      renderFn(this.shadowRoot, this.props, this.state, this.emit.bind(this));
     }
 
-    _render() {
-      renderFn(this.shadowRoot, this._props, this.state, this.emit.bind(this));
-    }
-
-    emit(eventName, detail = {}) {
-      this.dispatchEvent(new CustomEvent(eventName, {
+    emit(name, detail = {}) {
+      this.dispatchEvent(new CustomEvent(name, {
         detail,
         bubbles: true,
         composed: true
@@ -69,14 +40,19 @@ export function defineComponent(tagName, renderFn, props = []) {
     }
   }
 
-  customElements.define(tagName, AutoComponent);
-}
-
-function castProp(p, value) {
-  if (!p || typeof p === 'string') return value;
-  switch (p.type) {
-    case Boolean: return value === '' || value === 'true';
-    case Number: return Number(value);
-    default: return value;
+  // Legg til getters/setters som speiler prop -> attribute
+  for (const name of propNames) {
+    Object.defineProperty(Component.prototype, name, {
+      get() {
+        return this.props[name];
+      },
+      set(value) {
+        this.props[name] = value;
+        this.setAttribute(name, value);
+        this.render();
+      }
+    });
   }
+
+  customElements.define(tagName, Component);
 }
