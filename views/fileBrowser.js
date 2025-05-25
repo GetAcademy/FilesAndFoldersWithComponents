@@ -1,3 +1,10 @@
+import '../components/fileList.js';
+import '../components/fileEditor.js';
+import '../components/folderList.js';
+import '../components/breadcrumbPath.js';
+import '../components/newFolderForm.js';
+import '../components/newFileForm.js';
+import '../components/deleteDialog.js';
 import { defineComponent } from '../common/defineComponent.js';
 import { assignPropsBySelector } from '../common/assignPropsBySelector.js';
 import { model } from '../model.js';
@@ -15,7 +22,7 @@ defineComponent('file-browser', self => {
   listen('folder-list', 'select', ({ id }) => model.setCurrentId(id));
   listen('file-list', 'select', ({ id }) => model.setCurrentId(id));
   listen('file-editor', 'save', ({ id, content }) => model.saveFile(id, content));
-  listen('file-editor', 'cancel', () => {});
+  listen('file-editor', 'cancel', () => { });
   listen('new-folder-form', 'create-folder', ({ name, parentId }) => model.createFolder(name, parentId));
   listen('new-file-form', 'create-file', ({ name, parentId }) => model.createFile(name, parentId));
   listen('delete-dialog', 'delete', ({ id }) => model.deleteItem(id));
@@ -51,8 +58,3 @@ defineComponent('file-browser', self => {
     'delete-dialog': { current }
   });
 }, [], false);
-
-model.subscribe(state => {
-  const el = document.querySelector('file-browser');
-  if (el) el.render(state);
-});

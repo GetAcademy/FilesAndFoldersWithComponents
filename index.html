@@ -19,6 +19,15 @@
     </main>
     <script type="module">
         import './views/fileBrowser.js';
+        import { model } from './model.js';
+        
+        window.onload = () => {
+            model.subscribe(state => {
+                const el = document.querySelector('file-browser');
+                if (el) el.render(state);
+            });
+        };
+
     </script>
 </body>
 
