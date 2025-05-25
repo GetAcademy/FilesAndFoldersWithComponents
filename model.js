@@ -7,7 +7,7 @@ const state = {
     { id: 3, name: 'notater.md', parentId: 1, content: '# Møte\nAvtale kl 14' },
   ],
   app: {
-    currentId: 1
+    currentId: null
   }
 };
 
