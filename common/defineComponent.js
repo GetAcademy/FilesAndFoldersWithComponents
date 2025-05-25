@@ -9,6 +9,8 @@ export function defineComponent(tagName, renderFn, propNames = []) {
       this.attachShadow({ mode: 'open' });
       this.props = {};
       this.state = {};
+      this.appState = undefined;
+      this.renderFn = renderFn;
     }
 
     connectedCallback() {
@@ -27,8 +29,11 @@ export function defineComponent(tagName, renderFn, propNames = []) {
       }
     }
 
-    render() {
-      renderFn(this);
+    render(newAppState) {
+      if (newAppState !== undefined) {
+        this.appState = newAppState;
+      }
+      this.renderFn(this);
     }
 
     emit(name, detail = {}) {
