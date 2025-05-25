@@ -1,7 +1,8 @@
 import { defineComponent } from '../common/defineComponent.js';
 
-defineComponent('folder-list', (el, props, state, emit) => {
-  let folders = props.folders;
+defineComponent('folder-list', self => {
+  const el = self.shadowRoot;
+  let folders = self.props.folders;
   if (typeof folders === 'string') {
     try {
       folders = JSON.parse(folders);
@@ -9,7 +10,7 @@ defineComponent('folder-list', (el, props, state, emit) => {
       folders = [];
     }
   }
-  const currentId = props.currentId;
+  const currentId = self.props.currentId;
 
   let html = '';
   if (currentId != null) {
@@ -26,7 +27,7 @@ defineComponent('folder-list', (el, props, state, emit) => {
     a.onclick = e => {
       e.preventDefault();
       const id = a.dataset.id === '..' ? 'parent' : +a.dataset.id;
-      emit('select', { id });
+      self.emit('select', { id });
     };
   });
 }, ['folders', 'currentId']);

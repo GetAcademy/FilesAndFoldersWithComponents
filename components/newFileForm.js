@@ -1,7 +1,8 @@
 import { defineComponent } from '../common/defineComponent.js';
 
-defineComponent('new-file-form', (el, props, state, emit) => {
-  const currentId = props.currentId;
+defineComponent('new-file-form', self => {
+  const el = self.shadowRoot;
+  const currentId = self.props.currentId;
 
   el.innerHTML = `
     <fieldset>
@@ -12,6 +13,6 @@ defineComponent('new-file-form', (el, props, state, emit) => {
   `;
   el.querySelector('#add').onclick = () => {
     const name = el.querySelector('#fileName').value.trim();
-    if (name) emit('create-file', { name, parentId: currentId });
+    if (name) self.emit('create-file', { name, parentId: currentId });
   };
 }, ['currentId']);

@@ -1,7 +1,8 @@
 import { defineComponent } from '../common/defineComponent.js';
 
-defineComponent('file-editor', (el, props, state, emit) => {
-  let file = props.file;
+defineComponent('file-editor', self => {
+  const el = self.shadowRoot;
+  let file = self.props.file;
   if (typeof file === 'string') {
     try {
       file = JSON.parse(file);
@@ -25,7 +26,7 @@ defineComponent('file-editor', (el, props, state, emit) => {
   `;
 
   el.querySelector('#save').onclick = () => {
-    emit('save', { id: file.id, content: el.querySelector('#editArea').value });
+    self.emit('save', { id: file.id, content: el.querySelector('#editArea').value });
   };
-  el.querySelector('#cancel').onclick = () => emit('cancel');
+  el.querySelector('#cancel').onclick = () => self.emit('cancel');
 }, ['file']);

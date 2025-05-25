@@ -28,7 +28,7 @@ export function defineComponent(tagName, renderFn, propNames = []) {
     }
 
     render() {
-      renderFn(this.shadowRoot, this.props, this.state, this.emit.bind(this));
+      renderFn(this);
     }
 
     emit(name, detail = {}) {
@@ -40,7 +40,6 @@ export function defineComponent(tagName, renderFn, propNames = []) {
     }
   }
 
-  // Legg til getters/setters som speiler prop -> attribute
   for (const name of propNames) {
     Object.defineProperty(Component.prototype, name, {
       get() {

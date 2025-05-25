@@ -1,7 +1,8 @@
 import { defineComponent } from '../common/defineComponent.js';
 
-defineComponent('new-folder-form', (el, props, state, emit) => {
-  const currentId = props.currentId;
+defineComponent('new-folder-form', self => {
+  const el = self.shadowRoot;
+  const currentId = self.props.currentId;
 
   el.innerHTML = `
     <fieldset>
@@ -12,7 +13,6 @@ defineComponent('new-folder-form', (el, props, state, emit) => {
   `;
   el.querySelector('#add').onclick = () => {
     const name = el.querySelector('#folderName').value.trim();
-    if (name) emit('create-folder', { name, parentId: currentId });
+    if (name) self.emit('create-folder', { name, parentId: currentId });
   };
 }, ['currentId']);
-

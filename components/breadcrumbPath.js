@@ -1,12 +1,13 @@
 import { defineComponent } from '../common/defineComponent.js';
 
-defineComponent('breadcrumb-path', (el, props) => {
-  const currentId = props.currentId;
+defineComponent('breadcrumb-path', self => {
+  const el = self.shadowRoot;
+  const currentId = self.props.currentId;
   let breadcrumbs = [];
   let id = currentId;
   try {
+    const all = JSON.parse(localStorage.getItem('files')) || [];
     while (id) {
-      const all = JSON.parse(localStorage.getItem('files')) || [];
       const f = all.find(f => f.id == id);
       if (!f) break;
       breadcrumbs.unshift(`<span>${f.name}</span>`);

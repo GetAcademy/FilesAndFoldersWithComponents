@@ -1,17 +1,67 @@
-const model = {
-    app: {
-        currentId: null,
-        currentCreateNewFileInput: null,
-        currentCreateNewFolderInput: null,
-    },
-    filesAndFolders: [
-        { id: 1, name: 'Handlelister' },
-        { id: 2, name: 'Ting som skal fikses' },
-        { id: 3, name: 'Oktober', parentId: 1 },
-        { id: 4, name: 'Tirsdag 15.', parentId: 3, content: 'melk\nbrød\nost\n' },
-        { id: 5, name: 'Bad', parentId: 2, content: 'Lekkasje, bla bla' },
-        { id: 6, name: 'notater.txt', content: 'abc' },
-    ],
+const listeners = [];
+
+const state = {
+  filesAndFolders: [
+    { id: 1, name: 'Prosjekt', parentId: null },
+    { id: 2, name: 'todo.txt', parentId: 1, content: 'Kjøp melk\nRing Per' },
+    { id: 3, name: 'notater.md', parentId: 1, content: '# Møte\nAvtale kl 14' },
+  ],
+  app: {
+    currentId: 1
+  }
 };
-window.model = model;
-export { model };
+
+function notify() {
+  for (const l of listeners) l(getState());
+}
+
+function getState() {
+  const stateClone = structuredClone(state);
+  return Object.freeze(stateClone);
+}
+
+function setCurrentId(id) {
+  state.app.currentId = id;
+  notify();
+}
+
+function saveFile(id, content) {
+  const file = state.filesAndFolders.find(f => f.id === id);
+  if (file && file.content !== undefined) {
+    file.content = content;
+    notify();
+  }
+}
+
+function createFile(name, parentId) {
+  const id = Date.now();
+  state.filesAndFolders.push({ id, name, parentId, content: '' });
+  notify();
+}
+
+function createFolder(name, parentId) {
+  const id = Date.now();
+  state.filesAndFolders.push({ id, name, parentId });
+  notify();
+}
+
+function deleteItem(id) {
+  const deleteRecursive = id => {
+    const children = state.filesAndFolders.filter(f => f.parentId === id);
+    for (const child of children) deleteRecursive(child.id);
+    state.filesAndFolders = state.filesAndFolders.filter(f => f.id !== id);
+  };
+  deleteRecursive(id);
+  state.app.currentId = null;
+  notify();
+}
+
+export const model = {
+  getState,
+  subscribe: cb => listeners.push(cb),
+  setCurrentId,
+  saveFile,
+  createFile,
+  createFolder,
+  deleteItem
+};

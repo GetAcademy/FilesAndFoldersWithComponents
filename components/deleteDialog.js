@@ -1,7 +1,8 @@
 import { defineComponent } from '../common/defineComponent.js';
 
-defineComponent('delete-dialog', (el, props, state, emit) => {
-  let current = props.current;
+defineComponent('delete-dialog', self => {
+  const el = self.shadowRoot;
+  let current = self.props.current;
   if (typeof current === 'string') {
     try {
       current = JSON.parse(current);
@@ -21,5 +22,5 @@ defineComponent('delete-dialog', (el, props, state, emit) => {
       <button id="delete">Slett ${current.name}</button>
     </fieldset>
   `;
-  el.querySelector('#delete').onclick = () => emit('delete', { id: current.id });
+  el.querySelector('#delete').onclick = () => self.emit('delete', { id: current.id });
 }, ['current']);
