@@ -2,9 +2,15 @@ const listeners = [];
 
 const state = {
   filesAndFolders: [
-    { id: 1, name: 'Prosjekt', parentId: null },
-    { id: 2, name: 'todo.txt', parentId: 1, content: 'Kjøp melk\nRing Per' },
-    { id: 3, name: 'notater.md', parentId: 1, content: '# Møte\nAvtale kl 14' },
+    { id: 1, name: 'Emne 1' },
+    { id: 2, name: 'Emne 2' },
+    { id: 3, name: 'Emne 3' },
+    { id: 4, name: 'Semesterplan.md', content: 'Semesterplan' },
+    { id: 5, name: 'Uke 1' },
+    { id: 6, name: 'Uke 2' },
+    { id: 7, name: 'Plan for emne 1.md', content: 'Emneplan', parentId: 1 },
+    { id: 8, name: 'Plan for emne 2.md', content: 'Emneplan', parentId: 2 },
+    { id: 9, name: 'Plan for emne 3.md', content: 'Emneplan', parentId: 2 },
   ],
   app: {
     currentId: null
@@ -66,13 +72,20 @@ function getViewState(appState) {
   const { currentId } = appState.app;
   const { filesAndFolders } = appState;
 
-  const current = filesAndFolders.find(f => f.id === currentId);
-  const currentFolder = current?.content
-    ? filesAndFolders.find(f => f.id === current.parentId)
-    : current;
+  const isFileOrFolder = isFile => fileOrFolderObject => fileOrFolderObject?.content === isFile;
+  const isFile = isFileOrFolder(true);
+  const isFolder = isFileOrFolder(false);
 
-  const files = filesAndFolders.filter(f => f.content && f.parentId === currentFolder?.id);
-  const folders = filesAndFolders.filter(f => !f.content && f.parentId === currentFolder?.id);
+  const current = filesAndFolders.find(f => f.id === currentId) ?? null;
+  const currentFolder =
+    current === null ? { id: null, name: 'Rotmappe' }
+      : isFolder(current) ? current
+        : filesAndFolders.find(f => f.id === current.parentId);
+
+  const isInCorrectFolder = f => (f.parentId ?? null) === currentFolder.id;
+
+  const files = filesAndFolders.filter(f => isFile(f) && isInCorrectFolder(f));
+  const folders = filesAndFolders.filter(f => isFolder(f) && isInCorrectFolder(f));
   const selectedFile = current?.content ? current : null;
 
   return {
@@ -92,6 +105,6 @@ export const model = {
   saveFile,
   createFile,
   createFolder,
-  deleteItem, 
+  deleteItem,
   getViewState
 };
