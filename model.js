@@ -22,12 +22,18 @@ function subscribe(callback) {
   return () => listeners.splice(listeners.indexOf(callback), 1);
 }
 
-function setCurrentId(id) {
+function setCurrentId({ id }) {
   state.app.currentId = id;
   notify();
 }
 
-function saveFile(id, content) {
+function clearCurrentId() {
+  return setCurrentId({ id: null });
+}
+
+
+
+function saveFile({ id, content }) {
   const file = state.filesAndFolders.find(f => f.id === id);
   if (file && file.content !== undefined) {
     file.content = content;
@@ -35,19 +41,19 @@ function saveFile(id, content) {
   }
 }
 
-function createFile(name, parentId) {
+function createFile({ name, parentId }) {
   const id = Date.now();
   state.filesAndFolders.push({ id, name, parentId, content: '' });
   notify();
 }
 
-function createFolder(name, parentId) {
+function createFolder({ name, parentId }) {
   const id = Date.now();
   state.filesAndFolders.push({ id, name, parentId });
   notify();
 }
 
-function deleteItem(id) {
+function deleteItem({ id }) {
   const deleteRecursive = id => {
     const children = state.filesAndFolders.filter(f => f.parentId === id);
     for (const child of children) deleteRecursive(child.id);

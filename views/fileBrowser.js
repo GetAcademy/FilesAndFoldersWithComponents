@@ -19,13 +19,13 @@ defineComponent('file-browser', self => {
     });
   };
 
-  listen('folder-list', 'select', ({ id }) => model.setCurrentId(id));
-  listen('file-list', 'select', ({ id }) => model.setCurrentId(id));
-  listen('file-editor', 'save', ({ id, content }) => model.saveFile(id, content));
-  listen('file-editor', 'cancel', () => { });
-  listen('new-folder-form', 'create-folder', ({ name, parentId }) => model.createFolder(name, parentId));
-  listen('new-file-form', 'create-file', ({ name, parentId }) => model.createFile(name, parentId));
-  listen('delete-dialog', 'delete', ({ id }) => model.deleteItem(id));
+  listen('folder-list', 'select', model.setCurrentId);
+  listen('file-list', 'select', model.setCurrentId);
+  listen('file-editor', 'save', model.saveFile);
+  listen('file-editor', 'cancel', model.clearCurrentId);
+  listen('new-folder-form', 'create-folder', model.createFolder);
+  listen('new-file-form', 'create-file', model.createFile);
+  listen('delete-dialog', 'delete', model.deleteItem);
 
   const state = self.appState;
   const currentId = state.app.currentId;
