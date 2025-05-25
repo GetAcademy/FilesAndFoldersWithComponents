@@ -1,4 +1,4 @@
-export function defineComponent(tagName, renderFn, propNames = []) {
+export function defineComponent(tagName, renderFn, propNames = [], autoRender = true) {
   class Component extends HTMLElement {
     static get observedAttributes() {
       return propNames;
@@ -19,7 +19,7 @@ export function defineComponent(tagName, renderFn, propNames = []) {
           this.props[name] = this.getAttribute(name);
         }
       }
-      this.render();
+      if (autoRender) this.render();
     }
 
     attributeChangedCallback(name, oldValue, newValue) {

@@ -50,7 +50,7 @@ defineComponent('file-browser', self => {
     'new-file-form': { currentId },
     'delete-dialog': { current }
   });
-}, []);
+}, [], false);
 
 model.subscribe(state => {
   const el = document.querySelector('file-browser');

@@ -12,12 +12,14 @@ const state = {
 };
 
 function notify() {
-  for (const l of listeners) l(getState());
+  const copy = structuredClone(state);
+  for (const l of listeners) l(copy);
 }
 
-function getState() {
-  const stateClone = structuredClone(state);
-  return Object.freeze(stateClone);
+function subscribe(callback) {
+  listeners.push(callback);
+  callback(structuredClone(state));
+  return () => listeners.splice(listeners.indexOf(callback), 1);
 }
 
 function setCurrentId(id) {
@@ -57,8 +59,7 @@ function deleteItem(id) {
 }
 
 export const model = {
-  getState,
-  subscribe: cb => listeners.push(cb),
+  subscribe,
   setCurrentId,
   saveFile,
   createFile,
