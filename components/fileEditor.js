@@ -1,25 +1,31 @@
-import { defineComponent } from './defineComponent.js';
-import { model } from '../model.js';
+import { defineComponent } from '../common/defineComponent.js';
 
 defineComponent('file-editor', (el, props, state, emit) => {
-  const currentId = model.app.currentId;
-  const currentFile = model.filesAndFolders.find(f => f.id === currentId && f.content !== undefined);
-  if (!currentFile) {
+  let file = props.file;
+  if (typeof file === 'string') {
+    try {
+      file = JSON.parse(file);
+    } catch {
+      file = null;
+    }
+  }
+
+  if (!file) {
     el.innerHTML = '';
     return;
   }
-  el.innerHTML = /*HTML*/`
+
+  el.innerHTML = `
     <fieldset>
       <legend>Redigering</legend>
-      <textarea id="editArea">${currentFile.content}</textarea><br/>
+      <textarea id="editArea">${file.content}</textarea><br/>
       <button id="save">Lagre</button>
       <button id="cancel">Avbryt</button>
     </fieldset>
   `;
+
   el.querySelector('#save').onclick = () => {
-    currentFile.content = el.querySelector('#editArea').value;
+    emit('save', { id: file.id, content: el.querySelector('#editArea').value });
   };
-  el.querySelector('#cancel').onclick = () => {
-    document.querySelector('file-browser')._queueRender();
-  };
-});
+  el.querySelector('#cancel').onclick = () => emit('cancel');
+}, ['file']);

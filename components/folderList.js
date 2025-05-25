@@ -1,28 +1,32 @@
-import { defineComponent } from './defineComponent.js';
-import { model } from '../model.js';
+import { defineComponent } from '../common/defineComponent.js';
 
 defineComponent('folder-list', (el, props, state, emit) => {
-  const currentId = model.app.currentId;
-  const currentFolder = model.filesAndFolders.find(
-    f => f.id === currentId && !f.content);
-    const currentFolderId = currentFolder?.id ?? undefined;
-  const folders =  model.filesAndFolders.filter(f => !f.content && f.parentId === currentFolderId);
+  let folders = props.folders;
+  if (typeof folders === 'string') {
+    try {
+      folders = JSON.parse(folders);
+    } catch {
+      folders = [];
+    }
+  }
+  const currentId = props.currentId;
 
   let html = '';
-  if (currentFolder && currentFolder.parentId != null) {
-    html += `📁 <a href="#" data-id="${currentFolder.parentId}">..</a><br/>`;
+  if (currentId != null) {
+    html += `📁 <a href="#" data-id="..">..</a><br/>`;
   }
 
-  for (const folder of folders) {
+  for (const folder of folders ?? []) {
     html += `📁 <a href="#" data-id="${folder.id}">${folder.name}</a><br/>`;
   }
 
   el.innerHTML = `<fieldset><legend>Mapper</legend>${html}</fieldset>`;
+
   el.querySelectorAll('a').forEach(a => {
     a.onclick = e => {
       e.preventDefault();
-      model.app.currentId = +a.dataset.id;
-      document.querySelector('file-browser')._queueRender();
+      const id = a.dataset.id === '..' ? 'parent' : +a.dataset.id;
+      emit('select', { id });
     };
   });
-});
+}, ['folders', 'currentId']);

@@ -1,26 +1,25 @@
-import { defineComponent } from './defineComponent.js';
-import { model } from '../model.js';
-
-function deleteRecursive(id) {
-  const children = model.filesAndFolders.filter(f => f.parentId === id);
-  for (const child of children) deleteRecursive(child.id);
-  model.filesAndFolders = model.filesAndFolders.filter(f => f.id !== id);
-}
+import { defineComponent } from '../common/defineComponent.js';
 
 defineComponent('delete-dialog', (el, props, state, emit) => {
-  const current = model.filesAndFolders.find(f => f.id === model.app.currentId);
+  let current = props.current;
+  if (typeof current === 'string') {
+    try {
+      current = JSON.parse(current);
+    } catch {
+      current = null;
+    }
+  }
+
   if (!current) {
     el.innerHTML = '';
     return;
   }
+
   el.innerHTML = `
-    <button id="delete">Slett ${current.name}</button>
+    <fieldset>
+      <legend>Slett</legend>
+      <button id="delete">Slett ${current.name}</button>
+    </fieldset>
   `;
-  el.querySelector('#delete').onclick = () => {
-    if (confirm(`Slette ${current.name}?`)) {
-      deleteRecursive(current.id);
-      model.app.currentId = null;
-      document.querySelector('file-browser')._queueRender();
-    }
-  };
-});
+  el.querySelector('#delete').onclick = () => emit('delete', { id: current.id });
+}, ['current']);

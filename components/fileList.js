@@ -1,22 +1,25 @@
-import { defineComponent } from './defineComponent.js';
-import { model } from '../model.js';
+import { defineComponent } from '../common/defineComponent.js';
 
 defineComponent('file-list', (el, props, state, emit) => {
-  const currentId = model.app.currentId;
-  const currentFile = model.filesAndFolders.find(f => f.id === currentId);
-  const currentFolder = currentFile?.content ? model.filesAndFolders.find(f => f.id === currentFile.parentId) : currentFile;
-  const files = model.filesAndFolders.filter(f => f.content && f.parentId === currentFolder?.id);
+  let files = props.files;
+  if (typeof files === 'string') {
+    try {
+      files = JSON.parse(files);
+    } catch (e) {
+      files = [];
+    }
+  }
 
   let html = '';
-  for (const file of files) {
+  for (const file of files ?? []) {
     html += `<span>🗎</span> <a href="#" data-id="${file.id}">${file.name}</a><br/>`;
   }
   el.innerHTML = `<fieldset><legend>Filer</legend>${html}</fieldset>`;
+
   el.querySelectorAll('a').forEach(a => {
     a.onclick = e => {
       e.preventDefault();
-      model.app.currentId = +a.dataset.id;
-      document.querySelector('file-browser')._queueRender();
+      emit('select', { id: +a.dataset.id });
     };
   });
-});
+}, ['files']);
