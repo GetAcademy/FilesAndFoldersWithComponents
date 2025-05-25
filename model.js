@@ -81,8 +81,7 @@ function getViewState(appState) {
     currentFolder,
     files,
     folders,
-    selectedFile, 
-    getViewState
+    selectedFile
   };
 }
 
@@ -93,5 +92,6 @@ export const model = {
   saveFile,
   createFile,
   createFolder,
-  deleteItem
+  deleteItem, 
+  getViewState
 };
