@@ -27,15 +27,14 @@ defineComponent('file-browser', self => {
   listen('new-file-form', 'create-file', model.createFile);
   listen('delete-dialog', 'delete', model.deleteItem);
 
-  const state = self.appState;
-  const currentId = state.app.currentId;
-  const current = state.filesAndFolders.find(f => f.id === currentId);
-  const currentFolder = current?.content
-    ? state.filesAndFolders.find(f => f.id === current.parentId)
-    : current;
-  const files = state.filesAndFolders.filter(f => f.content && f.parentId === currentFolder?.id);
-  const folders = state.filesAndFolders.filter(f => !f.content && f.parentId === currentFolder?.id);
-  const selectedFile = current?.content ? current : null;
+  const {
+    currentId,
+    current,
+    currentFolder,
+    files,
+    folders,
+    selectedFile
+  } = model.getViewState(self.appState);
 
   el.innerHTML = `
     <h1>Filer og mapper</h1>

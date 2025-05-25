@@ -31,8 +31,6 @@ function clearCurrentId() {
   return setCurrentId({ id: null });
 }
 
-
-
 function saveFile({ id, content }) {
   const file = state.filesAndFolders.find(f => f.id === id);
   if (file && file.content !== undefined) {
@@ -63,6 +61,31 @@ function deleteItem({ id }) {
   state.app.currentId = null;
   notify();
 }
+
+function getViewState(appState) {
+  const { currentId } = appState.app;
+  const { filesAndFolders } = appState;
+
+  const current = filesAndFolders.find(f => f.id === currentId);
+  const currentFolder = current?.content
+    ? filesAndFolders.find(f => f.id === current.parentId)
+    : current;
+
+  const files = filesAndFolders.filter(f => f.content && f.parentId === currentFolder?.id);
+  const folders = filesAndFolders.filter(f => !f.content && f.parentId === currentFolder?.id);
+  const selectedFile = current?.content ? current : null;
+
+  return {
+    currentId,
+    current,
+    currentFolder,
+    files,
+    folders,
+    selectedFile, 
+    getViewState
+  };
+}
+
 
 export const model = {
   subscribe,
