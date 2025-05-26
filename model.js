@@ -6,8 +6,8 @@ const state = {
     { id: 2, name: 'Emne 2' },
     { id: 3, name: 'Emne 3' },
     { id: 4, name: 'Semesterplan.md', content: 'Semesterplan' },
-    { id: 5, name: 'Uke 1' },
-    { id: 6, name: 'Uke 2' },
+    { id: 5, name: 'Uke 1', parentId: 1 },
+    { id: 6, name: 'Uke 2', parentId: 1 },
     { id: 7, name: 'Plan for emne 1.md', content: 'Emneplan', parentId: 1 },
     { id: 8, name: 'Plan for emne 2.md', content: 'Emneplan', parentId: 2 },
     { id: 9, name: 'Plan for emne 3.md', content: 'Emneplan', parentId: 2 },
@@ -72,9 +72,8 @@ function getViewState(appState) {
   const { currentId } = appState.app;
   const { filesAndFolders } = appState;
 
-  const isFileOrFolder = isFile => fileOrFolderObject => fileOrFolderObject?.content === isFile;
-  const isFile = isFileOrFolder(true);
-  const isFolder = isFileOrFolder(false);
+  const isFile = f => f.content !== undefined;
+  const isFolder = f => f.content === undefined;
 
   const current = filesAndFolders.find(f => f.id === currentId) ?? null;
   const currentFolder =
@@ -82,7 +81,7 @@ function getViewState(appState) {
       : isFolder(current) ? current
         : filesAndFolders.find(f => f.id === current.parentId);
 
-  const isInCorrectFolder = f => (f.parentId ?? null) === currentFolder.id;
+  const isInCorrectFolder = f => (f?.parentId ?? null) === currentFolder.id;
 
   const files = filesAndFolders.filter(f => isFile(f) && isInCorrectFolder(f));
   const folders = filesAndFolders.filter(f => isFolder(f) && isInCorrectFolder(f));
