@@ -74,13 +74,8 @@ function getViewState(appState) {
 
   const isFile = f => f.content !== undefined;
   const isFolder = f => f.content === undefined;
-
   const current = filesAndFolders.find(f => f.id === currentId) ?? null;
-  const currentFolder =
-    current === null ? { id: null, name: 'Rotmappe' }
-      : isFolder(current) ? current
-        : filesAndFolders.find(f => f.id === current.parentId);
-
+  const currentFolder = getCurrentFolder(current, filesAndFolders);
   const isInCorrectFolder = f => (f?.parentId ?? null) === currentFolder.id;
 
   const files = filesAndFolders.filter(f => isFile(f) && isInCorrectFolder(f));
@@ -95,6 +90,16 @@ function getViewState(appState) {
     folders,
     selectedFile
   };
+}
+
+function getCurrentFolder(current, filesAndFolders) {
+  const root = { id: null, name: 'Rotmappe' };
+  if (current === null) return root;
+  const isFolder = current.content === undefined
+  if (isFolder) return current; 
+  const currentFolder = filesAndFolders.find(
+    f => f.id === current.parentId);
+  return currentFolder ?? root;
 }
 
 

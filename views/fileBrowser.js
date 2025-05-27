@@ -7,7 +7,7 @@ import '../components/newFileForm.js';
 import '../components/deleteDialog.js';
 import { defineComponent } from '../common/defineComponent.js';
 import { assignPropsBySelector } from '../common/assignPropsBySelector.js';
-import { model } from '../model.js';
+import { model } from '../common/model.js';
 
 defineComponent('file-browser', self => {
   const el = self.shadowRoot;
