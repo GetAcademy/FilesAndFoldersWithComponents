@@ -30,5 +30,6 @@ defineComponent('file-editor', self => {
   el.querySelector('#save').onclick = () => {
     self.emit('save', { id: file.id, content: el.querySelector('#editArea').value });
   };
+  el.querySelector('#delete').onclick = () => self.emit('delete', { id: current.id });
   el.querySelector('#cancel').onclick = () => self.emit('cancel');
 }, ['file']);
