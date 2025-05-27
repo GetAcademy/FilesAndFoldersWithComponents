@@ -22,6 +22,8 @@ defineComponent('file-editor', self => {
       <textarea id="editArea">${file.content}</textarea><br/>
       <button id="save">Lagre</button>
       <button id="cancel">Avbryt</button>
+      <br/>
+      <button id="delete">Slett ${file.name}</button>
     </fieldset>
   `;
 
