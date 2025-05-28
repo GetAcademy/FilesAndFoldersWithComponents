@@ -4,7 +4,6 @@ import '../components/folderList.js';
 import '../components/breadcrumbPath.js';
 import '../components/newFolderForm.js';
 import '../components/newFileForm.js';
-import '../components/deleteDialog.js';
 import { defineComponent } from '../common/defineComponent.js';
 import { assignPropsBySelector } from '../common/assignPropsBySelector.js';
 import { model } from '../common/model.js';
