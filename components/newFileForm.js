@@ -1,6 +1,6 @@
 import { defineComponent } from '../common/framework.js';
 
-defineComponent('new-file-form', ['currentId'], self => {
+defineComponent('new-file-form', ['currentId'], false, self => {
   const el = self.shadowRoot;
   const currentId = self.props.currentId;
 

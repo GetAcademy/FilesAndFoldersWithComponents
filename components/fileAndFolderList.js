@@ -1,9 +1,8 @@
 import { defineComponent } from '../common/framework.js';
 
-defineComponent('file-and-folder-list', ['files', 'folders', 'currentId'], self => {
+defineComponent('file-and-folder-list', ['files', 'folders', 'currentId'], false, self => {
   const el = self.shadowRoot;
   let files = self.props.files;
-  console.log(files);
   if (typeof files === 'string') {
     try {
       files = JSON.parse(files);

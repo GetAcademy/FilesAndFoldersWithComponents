@@ -1,6 +1,6 @@
 import { defineComponent } from '../common/framework.js';
 
-defineComponent('file-editor', ['file'], self => {
+defineComponent('file-editor', ['file'], false, self => {
   const el = self.shadowRoot;
   let file = self.props.file;
   if (typeof file === 'string') {

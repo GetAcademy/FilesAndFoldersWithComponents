@@ -1,6 +1,6 @@
 import { defineComponent } from '../common/framework.js';
 
-defineComponent('breadcrumb-path', ['currentId'], self => {
+defineComponent('breadcrumb-path', ['currentId'], false, self => {
   const el = self.shadowRoot;
   const currentId = self.props.currentId;
   let breadcrumbs = [];
