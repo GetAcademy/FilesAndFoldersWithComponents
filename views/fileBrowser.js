@@ -35,7 +35,7 @@ defineView('file-browser', self => {
   });
 
   const listen = createListen(el);
-  listen('file-and-filder-list', 'select', model.setCurrentId);
+  listen('file-and-folder-list', 'select', model.setCurrentId);
   listen('file-editor', 'save', model.saveFile);
   listen('file-editor', 'cancel', model.clearCurrentId);
   listen('new-form', 'create-new', model.createNew);
