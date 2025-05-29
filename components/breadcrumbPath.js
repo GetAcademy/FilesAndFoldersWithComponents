@@ -1,12 +1,12 @@
 import { defineComponent } from '../common/framework.js';
 
-defineComponent('breadcrumb-path', ['currentId'], false, self => {
+defineComponent('breadcrumb-path', ['currentId', 'filesAndFolders'], false, self => {
   const el = self.shadowRoot;
   const currentId = self.props.currentId;
   let breadcrumbs = [];
   let id = currentId;
   try {
-    const all = JSON.parse(localStorage.getItem('files')) || [];
+    const all = self.props.filesAndFolders;
     while (id) {
       const f = all.find(f => f.id == id);
       if (!f) break;

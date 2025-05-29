@@ -26,7 +26,7 @@ defineView('file-browser', self => {
   `;
 
   assignPropsBySelector(el, {
-    'breadcrumb-path': { currentId },
+    'breadcrumb-path': { currentId, filesAndFolders: self.appState.filesAndFolders },
     'file-and-folder-list': { files, folders, currentId },
     'file-editor': { file: selectedFile },
     'new-folder-form': { currentId },
