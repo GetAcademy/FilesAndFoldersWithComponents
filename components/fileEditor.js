@@ -1,6 +1,6 @@
 import { defineComponent } from '../common/framework.js';
 
-defineComponent('file-editor', self => {
+defineComponent('file-editor', ['file'], self => {
   const el = self.shadowRoot;
   let file = self.props.file;
   if (typeof file === 'string') {
@@ -32,4 +32,4 @@ defineComponent('file-editor', self => {
   };
   el.querySelector('#delete').onclick = () => self.emit('delete', { id: current.id });
   el.querySelector('#cancel').onclick = () => self.emit('cancel');
-}, ['file']);
+});

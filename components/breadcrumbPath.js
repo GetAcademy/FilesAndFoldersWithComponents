@@ -1,6 +1,6 @@
 import { defineComponent } from '../common/framework.js';
 
-defineComponent('breadcrumb-path', self => {
+defineComponent('breadcrumb-path', ['currentId'], self => {
   const el = self.shadowRoot;
   const currentId = self.props.currentId;
   let breadcrumbs = [];
@@ -18,4 +18,4 @@ defineComponent('breadcrumb-path', self => {
   }
 
   el.innerHTML = `<fieldset><legend>Her er du nå</legend>${breadcrumbs.length > 0 ? breadcrumbs.join(' > ') : '<i>rotmappe</i>'}</fieldset>`;
-}, ['currentId']);
+});

@@ -14,7 +14,7 @@ const assignPropsBySelector = (root, selectorPropMap) => {
     }
 }
 
-const defineComponent = (tagName, renderFn, propNames = [], autoRender = true) => {
+const defineComponent = (tagName, propNames, renderFn, autoRender = true) => {
     class Component extends HTMLElement {
         static get observedAttributes() {
             return propNames;
@@ -32,17 +32,25 @@ const defineComponent = (tagName, renderFn, propNames = [], autoRender = true) =
         connectedCallback() {
             for (const name of propNames) {
                 if (this.hasAttribute(name)) {
-                    this.props[name] = this.getAttribute(name);
+                    const val = this.getAttribute(name);
+                    try {
+                        this.props[name] = JSON.parse(val);
+                    } catch {
+                        this.props[name] = val;
+                    }
                 }
             }
             if (autoRender) this.render();
         }
 
         attributeChangedCallback(name, oldValue, newValue) {
-            if (oldValue !== newValue) {
+            if (this.skipAttributeChangedCallback || oldValue === newValue) return; 
+            try {
+                this.props[name] = JSON.parse(newValue);
+            } catch {
                 this.props[name] = newValue;
-                this.render();
             }
+            this.render();
         }
 
         render(newAppState) {
@@ -68,7 +76,12 @@ const defineComponent = (tagName, renderFn, propNames = [], autoRender = true) =
             },
             set(value) {
                 this.props[name] = value;
-                this.setAttribute(name, value);
+                try {
+                    this.skipAttributeChangedCallback = true;
+                    this.setAttribute(name, typeof value === 'object' ? JSON.stringify(value) : value);
+                } finally {
+                    this.skipAttributeChangedCallback = false;
+                }
                 this.render();
             }
         });
@@ -77,8 +90,8 @@ const defineComponent = (tagName, renderFn, propNames = [], autoRender = true) =
     customElements.define(tagName, Component);
 }
 
-const defineView = (tagName, renderFn, propNames = []) =>
-    defineComponent(tagName, renderFn, propNames, false);
+const defineView = (tagName, renderFn) =>
+    defineComponent(tagName, [], renderFn, false);
 
 const createListen = el => (selector, eventName, handler) => {
     const target = el.querySelector(selector);

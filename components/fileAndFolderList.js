@@ -1,7 +1,17 @@
 import { defineComponent } from '../common/framework.js';
 
-defineComponent('folder-list', self => {
+defineComponent('file-and-folder-list', ['files', 'folders', 'currentId'], self => {
   const el = self.shadowRoot;
+  let files = self.props.files;
+  console.log(files);
+  if (typeof files === 'string') {
+    try {
+      files = JSON.parse(files);
+    } catch {
+      files = [];
+    }
+  }
+
   let folders = self.props.folders;
   if (typeof folders === 'string') {
     try {
@@ -10,9 +20,9 @@ defineComponent('folder-list', self => {
       folders = [];
     }
   }
+  let html = '';
   const currentId = self.props.currentId;
 
-  let html = '';
   if (currentId != null) {
     html += `📁 <a href="#" data-id="..">..</a><br/>`;
   }
@@ -20,8 +30,11 @@ defineComponent('folder-list', self => {
   for (const folder of folders ?? []) {
     html += `📁 <a href="#" data-id="${folder.id}">${folder.name}</a><br/>`;
   }
+  for (const file of files ?? []) {
+    html += `<span>🗎</span> <a href="#" data-id="${file.id}">${file.name}</a><br/>`;
+  }
 
-  el.innerHTML = `<fieldset><legend>Mapper</legend>${html}</fieldset>`;
+  el.innerHTML = `<fieldset><legend>Mapper og filer</legend>${html}</fieldset>`;
 
   el.querySelectorAll('a').forEach(a => {
     a.onclick = e => {
@@ -30,4 +43,4 @@ defineComponent('folder-list', self => {
       self.emit('select', { id });
     };
   });
-}, ['folders', 'currentId']);
+});
