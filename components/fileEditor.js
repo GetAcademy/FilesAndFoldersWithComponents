@@ -1,4 +1,4 @@
-import { defineComponent } from '../common/defineComponent.js';
+import { defineComponent } from '../common/framework.js';
 
 defineComponent('file-editor', self => {
   const el = self.shadowRoot;

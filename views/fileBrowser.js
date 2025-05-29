@@ -4,32 +4,15 @@ import '../components/folderList.js';
 import '../components/breadcrumbPath.js';
 import '../components/newFolderForm.js';
 import '../components/newFileForm.js';
-import { defineComponent } from '../common/defineComponent.js';
-import { assignPropsBySelector } from '../common/assignPropsBySelector.js';
+import { defineView, assignPropsBySelector, listen } from '../common/framework.js';
 import { model } from '../common/model.js';
 
-defineComponent('file-browser', self => {
+defineView('file-browser', self => {
   const el = self.shadowRoot;
-
-  const listen = (selector, eventName, handler) => {
-    el.addEventListener(eventName, e => {
-      const target = e.target.closest(selector);
-      if (target) handler(e.detail);
-    });
-  };
-
-  listen('folder-list', 'select', model.setCurrentId);
-  listen('file-list', 'select', model.setCurrentId);
-  listen('file-editor', 'save', model.saveFile);
-  listen('file-editor', 'cancel', model.clearCurrentId);
-  listen('new-folder-form', 'create-folder', model.createFolder);
-  listen('new-file-form', 'create-file', model.createFile);
-  listen('delete-dialog', 'delete', model.deleteItem);
 
   const {
     currentId,
     current,
-    currentFolder,
     files,
     folders,
     selectedFile
@@ -55,4 +38,13 @@ defineComponent('file-browser', self => {
     'new-file-form': { currentId },
     'delete-dialog': { current }
   });
-}, [], false);
+
+  listen('folder-list', 'select', model.setCurrentId);
+  listen('file-list', 'select', model.setCurrentId);
+  listen('file-editor', 'save', model.saveFile);
+  listen('file-editor', 'cancel', model.clearCurrentId);
+  listen('new-folder-form', 'create-folder', model.createFolder);
+  listen('new-file-form', 'create-file', model.createFile);
+  listen('delete-dialog', 'delete', model.deleteItem);
+
+});

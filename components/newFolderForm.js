@@ -1,4 +1,4 @@
-import { defineComponent } from '../common/defineComponent.js';
+import { defineComponent } from '../common/framework.js';
 
 defineComponent('new-folder-form', self => {
   const el = self.shadowRoot;
