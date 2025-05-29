@@ -10,7 +10,9 @@ defineComponent('breadcrumb-path', ['currentId', 'filesAndFolders'], false, self
     while (id) {
       const f = all.find(f => f.id == id);
       if (!f) break;
-      breadcrumbs.unshift(`<span>${f.name}</span>`);
+      if (f.content === undefined) {
+        breadcrumbs.unshift(`<span>${f.name}</span>`);
+      }
       id = f.parentId;
     }
   } catch {
