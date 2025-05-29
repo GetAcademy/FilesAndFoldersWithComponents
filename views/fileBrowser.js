@@ -1,7 +1,7 @@
 import '../components/fileAndFolderList.js';
 import '../components/fileEditor.js';
 import '../components/breadcrumbPath.js';
-import '../components/newFileForm.js';
+import '../components/newForm.js';
 import { defineView, assignPropsBySelector, createListen } from '../common/framework.js';
 import { model } from '../common/model.js';
 
@@ -21,7 +21,7 @@ defineView('file-browser', self => {
     <breadcrumb-path></breadcrumb-path>
     <file-and-folder-list></file-and-folder-list>
     <file-editor></file-editor>
-    <new-file-form></new-file-form>
+    <new-form></new-form>
     <delete-dialog></delete-dialog>
   `;
 
@@ -30,7 +30,7 @@ defineView('file-browser', self => {
     'file-and-folder-list': { files, folders, currentId },
     'file-editor': { file: selectedFile },
     'new-folder-form': { currentId },
-    'new-file-form': { currentId },
+    'new-form': { currentId },
     'delete-dialog': { current }
   });
 
@@ -38,7 +38,6 @@ defineView('file-browser', self => {
   listen('file-and-filder-list', 'select', model.setCurrentId);
   listen('file-editor', 'save', model.saveFile);
   listen('file-editor', 'cancel', model.clearCurrentId);
-  listen('new-folder-form', 'create-folder', model.createFolder);
-  listen('new-file-form', 'create-file', model.createFile);
+  listen('new-form', 'create-new', model.createNew);
   listen('delete-dialog', 'delete', model.deleteItem);
 });

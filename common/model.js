@@ -45,15 +45,11 @@ function saveFile({ id, content }) {
   }
 }
 
-function createFile({ name, parentId }) {
+function createNew({ name, parentId, isFolder }) {
   const id = Date.now();
-  state.filesAndFolders.push({ id, name, parentId, content: '' });
-  notify();
-}
-
-function createFolder({ name, parentId }) {
-  const id = Date.now();
-  state.filesAndFolders.push({ id, name, parentId });
+  const newItem = { id, name, parentId };
+  if (!isFolder) newItem.content = '';
+  state.filesAndFolders.push(newItem);
   notify();
 }
 
@@ -96,7 +92,7 @@ function getCurrentFolder(current, filesAndFolders) {
   const root = { id: null, name: 'Rotmappe' };
   if (current === null) return root;
   const isFolder = current.content === undefined
-  if (isFolder) return current; 
+  if (isFolder) return current;
   const currentFolder = filesAndFolders.find(
     f => f.id === current.parentId);
   return currentFolder ?? root;
@@ -107,8 +103,7 @@ export const model = {
   subscribe,
   setCurrentId,
   saveFile,
-  createFile,
-  createFolder,
+  createNew,
   deleteItem,
   getViewState
 };
