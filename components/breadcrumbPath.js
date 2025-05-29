@@ -18,6 +18,6 @@ defineComponent('breadcrumb-path', ['currentId', 'filesAndFolders'], false, self
   } catch {
     breadcrumbs = [];
   }
-  const breadcrumbsStr = breadcrumbs.length > 0 ? breadcrumbs.join(' > ') : '<i>rotmappe</i>';
+  const breadcrumbsStr = breadcrumbs.length > 0 ? ' > ' + breadcrumbs.join(' > ') : '<i>rotmappe</i>';
   el.innerHTML = `<fieldset><legend>Her er du nå</legend>${breadcrumbsStr}</fieldset>`;
 });

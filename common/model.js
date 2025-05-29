@@ -10,7 +10,7 @@ const state = {
     { id: 6, name: 'Uke 2', parentId: 1 },
     { id: 7, name: 'Plan for emne 1.md', content: 'Emneplan', parentId: 1 },
     { id: 8, name: 'Plan for emne 2.md', content: 'Emneplan', parentId: 2 },
-    { id: 9, name: 'Plan for emne 3.md', content: 'Emneplan', parentId: 2 },
+    { id: 9, name: 'Plan for emne 3.md', content: 'Emneplan', parentId: 3 },
   ],
   app: {
     currentId: null
