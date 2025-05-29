@@ -4,7 +4,7 @@ import '../components/folderList.js';
 import '../components/breadcrumbPath.js';
 import '../components/newFolderForm.js';
 import '../components/newFileForm.js';
-import { defineView, assignPropsBySelector, listen } from '../common/framework.js';
+import { defineView, assignPropsBySelector, createListen } from '../common/framework.js';
 import { model } from '../common/model.js';
 
 defineView('file-browser', self => {
@@ -39,6 +39,7 @@ defineView('file-browser', self => {
     'delete-dialog': { current }
   });
 
+  const listen = createListen(el);
   listen('folder-list', 'select', model.setCurrentId);
   listen('file-list', 'select', model.setCurrentId);
   listen('file-editor', 'save', model.saveFile);
@@ -46,5 +47,4 @@ defineView('file-browser', self => {
   listen('new-folder-form', 'create-folder', model.createFolder);
   listen('new-file-form', 'create-file', model.createFile);
   listen('delete-dialog', 'delete', model.deleteItem);
-
 });

@@ -80,10 +80,10 @@ const defineComponent = (tagName, renderFn, propNames = [], autoRender = true) =
 const defineView = (tagName, renderFn, propNames = []) =>
     defineComponent(tagName, renderFn, propNames, false);
 
-const listen = (selector, eventName, handler) => {
+const createListen = el => (selector, eventName, handler) => {
     const target = el.querySelector(selector);
     if (!target) return;
     target.addEventListener(eventName, e => handler(e.detail));
 };
 
-export { listen, defineComponent, defineView, assignPropsBySelector };
+export { createListen, defineComponent, defineView, assignPropsBySelector };
