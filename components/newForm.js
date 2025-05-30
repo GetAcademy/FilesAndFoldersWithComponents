@@ -1,21 +1,22 @@
 import { defineComponent } from '../common/framework.js';
 
-defineComponent('new-form', ['currentId'], false, self => {
+defineComponent('new-form', ['currentFolder'], false, self => {
   const el = self.shadowRoot;
-  const currentId = self.props.currentId;
+  const currentFolder = self.props.currentFolder;
 
-  el.innerHTML = `
+  el.innerHTML = /*HTML*/`
     <fieldset>
-      <legend>Ny mappe eller fil</legend>
+      <legend>Opprette mappe eller file</legend>
       <input placeholder="Skriv inn navn">
       <button>Ny mappe</button>
       <button>Ny fil</button>
+      <br/>
     </fieldset>
   `;
   const btns = el.querySelectorAll('button');  
   const emit = isFolder => () => {
     const name = el.querySelector('input').value.trim();
-    if (name) self.emit('create-new', { name, parentId: currentId, isFolder });
+    if (name) self.emit('create-new', { name, parentId: currentFolder, isFolder });
   };
   btns[0].addEventListener('click', emit(true));
   btns[1].addEventListener('click', emit(false));

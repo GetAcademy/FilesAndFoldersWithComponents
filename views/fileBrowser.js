@@ -12,6 +12,7 @@ defineView('file-browser', self => {
   const {
     currentId,
     current,
+    currentFolder,
     files,
     folders,
     selectedFile
@@ -31,16 +32,14 @@ defineView('file-browser', self => {
     'breadcrumb-path': { currentId, filesAndFolders: self.appState.filesAndFolders },
     'file-and-folder-list': { files, folders, currentId },
     'file-editor': { file: selectedFile },
-    'new-folder-form': { currentId },
-    'delete-form': { file: selectedFile },
-    'new-form': { currentId },
-    'delete-dialog': { current }
+    'delete-form': { file: selectedFile, currentId },
+    'new-form': { currentFolder },
   });
 
   const listen = createListen(el);
   listen('file-and-folder-list', 'select', model.setCurrentId);
   listen('file-editor', 'save', model.saveFile);
   listen('file-editor', 'cancel', model.clearCurrentId);
-  listen('delete-item', 'create-new', model.deleteItem);
+  listen('delete-form', 'delete-item', model.deleteItem);
   listen('new-form', 'create-new', model.createNew);
 });
