@@ -32,7 +32,7 @@ defineView('file-browser', self => {
     'breadcrumb-path': { currentId, filesAndFolders: self.appState.filesAndFolders },
     'file-and-folder-list': { files, folders, currentId },
     'file-editor': { file: selectedFile },
-    'delete-form': { file: selectedFile, currentId },
+    'delete-form': { current },
     'new-form': { currentFolder },
   });
 

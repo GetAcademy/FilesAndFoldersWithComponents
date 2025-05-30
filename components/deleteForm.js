@@ -1,21 +1,39 @@
 import { defineComponent } from '../common/framework.js';
 
-defineComponent('delete-form', ['file', 'currentId'], false, self => {
+defineComponent('delete-form', ['current'], false, self => {
   const el = self.shadowRoot;
-  let file = self.props.file;
-  const currentId = self.props.currentId;
-  if (!file) {
+  const current = self.props.current;
+
+  if (!current) {
     el.innerHTML = '';
     return;
   }
 
-  el.innerHTML = `
-    <fieldset>
-      <legend>Slette</legend>
-      <button>Slett ${file.name}</button>
-    </fieldset>
-  `;
+  const setContent = html => {
+    el.innerHTML = /*HTML*/`
+      <fieldset>
+        <legend>Slette</legend>
+        ${html}
+      </fieldset>
+    `;
+  }
 
-  el.querySelector('button').onclick =
-    () => self.emit('delete-item', { id: currentId });
+  if (!self.state.confirm) {
+    setContent(`<button>Slett ${current.name}</button>`);
+    el.querySelector('button').onclick = () => {
+      self.state.confirm = true;
+      self.render();
+    };
+  } else {
+    setContent(/*HTML*/`
+        <div>Er du sikker på at du vil slette <strong>${current.name}</strong>?</div>
+        <button id="confirm-delete">Ja, slett</button>
+        <button id="cancel-delete" type="button">Avbryt</button>
+    `);
+  }
+  el.querySelector('#confirm-delete').onclick = () => self.emit('delete-item', { id: current.id });
+  el.querySelector('#cancel-delete').onclick = () => {
+    self.state.confirm = false;
+    self.render();
+  };
 });
