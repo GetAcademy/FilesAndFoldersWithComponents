@@ -30,10 +30,11 @@ defineComponent('delete-form', ['current'], false, self => {
         <button id="confirm-delete">Ja, slett</button>
         <button id="cancel-delete" type="button">Avbryt</button>
     `);
+    el.querySelector('#confirm-delete').onclick = () =>
+      self.emit('delete-item', { id: current.id });
+    el.querySelector('#cancel-delete').onclick = () => {
+      self.state.confirm = false;
+      self.render();
+    };
   }
-  el.querySelector('#confirm-delete').onclick = () => self.emit('delete-item', { id: current.id });
-  el.querySelector('#cancel-delete').onclick = () => {
-    self.state.confirm = false;
-    self.render();
-  };
 });
