@@ -76,7 +76,7 @@ function getViewState(appState) {
 
   const files = filesAndFolders.filter(f => isFile(f) && isInCorrectFolder(f));
   const folders = filesAndFolders.filter(f => isFolder(f) && isInCorrectFolder(f));
-  const selectedFile = current?.content ? current : null;
+  const selectedFile = current !== null && current.content !== undefined ? current : null;
 
   return {
     currentId,

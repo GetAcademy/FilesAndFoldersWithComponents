@@ -16,7 +16,7 @@ defineComponent('new-form', ['currentFolder'], false, self => {
   const btns = el.querySelectorAll('button');  
   const emit = isFolder => () => {
     const name = el.querySelector('input').value.trim();
-    if (name) self.emit('create-new', { name, parentId: currentFolder, isFolder });
+    if (name) self.emit('create-new', { name, parentId: currentFolder.id, isFolder });
   };
   btns[0].addEventListener('click', emit(true));
   btns[1].addEventListener('click', emit(false));
