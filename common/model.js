@@ -37,10 +37,21 @@ function setCurrentId({ id }) {
   notify();
 }
 
+function selectParent() {
+  const current = find(state.app.currentId);
+  const currentFolder = getCurrentFolder(current, state.app.filesAndFolders);
+  const id = currentFolder.parentId;
+  if (id) {
+    setCurrentId({ id });
+    return;
+  }
+}
+
 function clearCurrentId() {
   const fileId = state.app.currentId;
   const id = fileId === null ? null : (find(fileId)?.parentId ?? null);
-  return setCurrentId({ id });
+  setCurrentId({ id });
+  return;
 }
 
 function saveFile({ id, content }) {
@@ -108,6 +119,7 @@ function getCurrentFolder(current, filesAndFolders) {
 export const model = {
   subscribe,
   setCurrentId,
+  selectParent,
   saveFile,
   clearCurrentId,
   createNew,

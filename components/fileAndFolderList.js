@@ -2,10 +2,10 @@ import { defineComponent } from '../common/framework.js';
 
 defineComponent('file-and-folder-list', ['files', 'folders', 'currentId'], false, self => {
   const el = self.shadowRoot;
-  const {files, folders, currentId} = self.props;
+  const { files, folders, currentId, current } = self.props;
   let html = '';
 
-  if (currentId != null) {
+  if (currentId != null && current !== undefined && current.content === undefined) {
     html += `📁 <a href="#" data-id="..">..</a><br/>`;
   }
 
@@ -21,8 +21,9 @@ defineComponent('file-and-folder-list', ['files', 'folders', 'currentId'], false
   el.querySelectorAll('a').forEach(a => {
     a.onclick = e => {
       e.preventDefault();
-      const id = a.dataset.id === '..' ? 'parent' : +a.dataset.id;
-      self.emit('select', { id });
+      const selectedId = a.dataset.id;
+      if (selectedId === '..')self.emit('select-parent', { id });
+      else self.emit('select', { id: +a.dataset.id });
     };
   });
 });

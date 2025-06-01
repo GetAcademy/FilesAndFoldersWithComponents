@@ -30,7 +30,7 @@ defineView('file-browser', self => {
 
   assignPropsBySelector(el, {
     'breadcrumb-path': { currentId, filesAndFolders: self.appState.filesAndFolders },
-    'file-and-folder-list': { files, folders, currentId },
+    'file-and-folder-list': { files, folders, currentId, current },
     'file-editor': { file: selectedFile },
     'delete-form': { current },
     'new-form': { currentFolder },
@@ -38,6 +38,7 @@ defineView('file-browser', self => {
 
   const listen = createListen(el);
   listen('file-and-folder-list', 'select', model.setCurrentId);
+  listen('file-and-folder-list', 'select-parent', model.selectParent);
   listen('file-editor', 'save', model.saveFile);
   listen('file-editor', 'cancel', model.clearCurrentId);
   listen('delete-form', 'delete-item', model.deleteItem);
