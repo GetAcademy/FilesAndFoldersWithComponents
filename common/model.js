@@ -17,6 +17,10 @@ const state = {
   }
 };
 
+function find(id) {
+  return state.filesAndFolders.find(f => f.id === id) ?? null;
+}
+
 function notify() {
   const copy = structuredClone(state);
   for (const l of listeners) l(copy);
@@ -34,14 +38,16 @@ function setCurrentId({ id }) {
 }
 
 function clearCurrentId() {
-  return setCurrentId({ id: null });
+  const fileId = state.app.currentId;
+  const id = fileId === null ? null : (find(fileId)?.parentId ?? null);
+  return setCurrentId({ id });
 }
 
 function saveFile({ id, content }) {
-  const file = state.filesAndFolders.find(f => f.id === id);
+  const file = find(id);
   if (file && file.content !== undefined) {
     file.content = content;
-    notify();
+    clearCurrentId();
   }
 }
 
@@ -70,7 +76,7 @@ function getViewState(appState) {
 
   const isFile = f => f.content !== undefined;
   const isFolder = f => f.content === undefined;
-  const current = filesAndFolders.find(f => f.id === currentId) ?? null;
+  const current = find(currentId);
   const currentFolder = getCurrentFolder(current, filesAndFolders);
   const isInCorrectFolder = f => (f?.parentId ?? null) === currentFolder.id;
 
@@ -103,6 +109,7 @@ export const model = {
   subscribe,
   setCurrentId,
   saveFile,
+  clearCurrentId,
   createNew,
   deleteItem,
   getViewState
