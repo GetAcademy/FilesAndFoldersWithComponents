@@ -69,20 +69,20 @@ Lage eksplisitte TypeScript datatyper for alt som finnes i appState.
 
 ## 2  Komponentkart
 
-| Original JS‑fil | Ny `.vue`‑fil          | Props                                      | Emits                          | Kommentar                                          |
-| --------------- | ---------------------- | ------------------------------------------ | ------------------------------ | -------------------------------------------------- |
-| `fileBrowser.js` | `FileBrowser.vue`      | –                                          | –                              | **Den eneste** som bruker Pinia direkte            |
-| `breadcrumbPath.js` | `BreadcrumbPath.vue` | `currentId`, `items`                       | –                              | Viser sti                                          |
-| `fileAndFolderList.js` | `FileAndFolderList.vue` | `files`, `folders`, `currentId`, `current` | `select`, `select-parent`      | Klikk‑navigasjon                                   |
-| `fileEditor.js` | `FileEditor.vue`       | `file`                                     | `save`, `cancel`               | `<textarea v-model>`                               |
-| `newForm.js`    | `NewForm.vue`          | `currentFolder`                            | `create-new`                   | Skjema for ny fil/mappe                            |
-| `deleteForm.js` | `DeleteForm.vue`       | `current`                                  | `delete-item`                  | Bekreft sletting                                   |
+| Original JS‑fil | Ny `.vue`‑fil          | 
+| --------------- | ---------------------- | 
+| `fileBrowser.js` | `FileBrowser.vue`      | 
+| `breadcrumbPath.js` | `BreadcrumbPath.vue` | 
+| `fileAndFolderList.js` | `FileAndFolderList.vue` |
+| `fileEditor.js` | `FileEditor.vue`       | 
+| `newForm.js`    | `NewForm.vue`          | 
+| `deleteForm.js` | `DeleteForm.vue`       | 
 
 Alle komponenter bruker `<script setup lang="ts">`.
 
 ---
 
-## 3  Filstruktur og datastrøm
+## 3  Oppsummering filer og avghengigheter
 
 ```
 App.vue
@@ -111,24 +111,10 @@ App.vue
 ## 5  Innsending
 
 1. **Lag en ZIP-fil uten `node_modules/`**
-
-   | Plattform | Kommando | Forklaring |
-   |-----------|----------|------------|
-   | macOS / Linux (bash) | ```bash
-zip -r file-browser-vue.zip . -x "node_modules/*"``` | `-r` rekursivt, `-x` ekskluderer alt i `node_modules/`. |
-   | Windows PowerShell ≥ 5 | ```powershell
-Compress-Archive -Path * -DestinationPath file-browser-vue.zip -Exclude node_modules,node_modules\*``` | `-Exclude` tar bort mappen. |
-   | Git (hvis repoet er rent) | ```bash
-git archive --format zip --output ../file-browser-vue.zip HEAD``` | Bruker `.gitignore` til å utelate `node_modules/`. |
-
-   > **Tips:** Sørg for at `dist/` eller `build/` mappen *er* med i ZIP-en dersom du bygger før innsending.  
    > Kontroller at ZIP-filen er under ~10 MB; hvis den er mye større har du sannsynligvis fått med `node_modules`.
 
 2. **Last opp ZIP til Google Disk**
-
-   1. Gå til <https://drive.google.com/> og dra filen inn i ønsket mappe.  
-   2. Høyre‑klikk filen → **Del** → skriv inn min e‑postadresse (brukernavn oppgitt i oppgaven) og gi *Viser*‑rettighet.  
-      <br>Alternativt: velg «Kopier lenke», sett *Alle med lenken → Viser*, og lim lenken inn i README eller i innleveringsskjemaet.
+3. Del Zip-filen med Terje - og gi beskjed også på en annen måte at du har levert. 
 
 ## 6  Vurdering
 
