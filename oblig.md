@@ -51,7 +51,7 @@
 
 | Del i `model.js` | Hva det gjør | Hva det skal bli |
 | ---------------- | ----------- | ---------------- |
-| `state`‑feltet   | rot‑tilstand | `state()` i Pinia |
+| `state`‑feltet   | rot‑tilstand | `ref` / `reactive` i `defineStore(() => { … })` |
 | Funksjoner som endrer data (f.eks. `saveFile`) | logiske operasjoner | **actions** |
 | Visningshjelpere (`getViewState`) | filtrerer/mapper data | **getters** |
 
