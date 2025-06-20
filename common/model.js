@@ -21,14 +21,17 @@ function find(id) {
   return state.filesAndFolders.find(f => f.id === id) ?? null;
 }
 
+function getStateCopy() {
+  return Object.freeze(structuredClone(state));
+}
+
 function notify() {
-  const copy = structuredClone(state);
-  for (const l of listeners) l(copy);
+  for (const l of listeners) l(getStateCopy());
 }
 
 function subscribe(callback) {
   listeners.push(callback);
-  callback(structuredClone(state));
+  callback(getStateCopy());
   return () => listeners.splice(listeners.indexOf(callback), 1);
 }
 
@@ -41,10 +44,7 @@ function selectParent() {
   const current = find(state.app.currentId);
   const currentFolder = getCurrentFolder(current, state.app.filesAndFolders);
   const id = currentFolder.parentId;
-  if (id) {
-    setCurrentId({ id });
-    return;
-  }
+  setCurrentId({ id: id ?? null });
 }
 
 function clearCurrentId() {
@@ -102,7 +102,7 @@ function getViewState(appState) {
     files,
     folders,
     selectedFile
-  };
+  }
 }
 
 function getCurrentFolder(current, filesAndFolders) {
