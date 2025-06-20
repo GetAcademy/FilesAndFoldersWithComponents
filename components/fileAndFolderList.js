@@ -22,7 +22,7 @@ defineComponent('file-and-folder-list', ['files', 'folders', 'currentId', 'curre
     a.onclick = e => {
       e.preventDefault();
       const selectedId = a.dataset.id;
-      if (selectedId === '..')self.emit('select-parent', { id });
+      if (selectedId === '..') self.emit('select-parent', { id: currentId });
       else self.emit('select', { id: +a.dataset.id });
     };
   });
