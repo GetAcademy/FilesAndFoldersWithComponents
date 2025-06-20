@@ -1,6 +1,6 @@
 import { defineComponent } from '../common/framework.js';
 
-defineComponent('file-and-folder-list', ['files', 'folders', 'currentId'], false, self => {
+defineComponent('file-and-folder-list', ['files', 'folders', 'currentId', 'current'], false, self => {
   const el = self.shadowRoot;
   const { files, folders, currentId, current } = self.props;
   let html = '';
