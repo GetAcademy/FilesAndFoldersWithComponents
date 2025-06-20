@@ -115,7 +115,6 @@ function getCurrentFolder(current, filesAndFolders) {
   return currentFolder ?? root;
 }
 
-
 export const model = {
   subscribe,
   setCurrentId,

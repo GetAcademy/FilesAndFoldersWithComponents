@@ -9,6 +9,12 @@ const assignPropsBySelector = (root, selectorPropMap) => {
   }
 };
 
+const createListen = el => (selector, eventName, handler) => {
+    const target = el.querySelector(selector);
+    if (!target) return;
+    target.addEventListener(eventName, e => handler(e.detail));
+};
+
 const defineComponent = (tagName, propNames, autoRender, renderFn) => {
   class Component extends HTMLElement {
     static get observedAttributes() {
@@ -109,11 +115,5 @@ const defineComponent = (tagName, propNames, autoRender, renderFn) => {
 
 const defineView = (tagName, renderFn) =>
     defineComponent(tagName, [], false, renderFn);
-
-const createListen = el => (selector, eventName, handler) => {
-    const target = el.querySelector(selector);
-    if (!target) return;
-    target.addEventListener(eventName, e => handler(e.detail));
-};
 
 export { createListen, defineComponent, defineView, assignPropsBySelector };

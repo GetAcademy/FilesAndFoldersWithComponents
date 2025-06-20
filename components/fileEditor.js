@@ -8,7 +8,7 @@ defineComponent('file-editor', ['file'], false, self => {
     return;
   }
 
-  el.innerHTML = `
+  el.innerHTML = /*HTML*/`
     <fieldset>
       <legend>Redigering</legend>
       <textarea id="editArea">${file.content}</textarea><br/>

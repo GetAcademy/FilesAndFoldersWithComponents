@@ -18,7 +18,7 @@ defineView('file-browser', self => {
     selectedFile
   } = model.getViewState(self.appState);
 
-  el.innerHTML = `
+  el.innerHTML = /*HTML*/`
     <h1>Filer og mapper</h1>
     <breadcrumb-path></breadcrumb-path>
     <file-and-folder-list></file-and-folder-list>
